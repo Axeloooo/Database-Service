@@ -1,6 +1,6 @@
 package com.project.backend.controllers;
 
-import com.project.backend.Requests.AdressRequest;
+import com.project.backend.requests.AdressRequest;
 import com.project.backend.models.Adress;
 import com.project.backend.models.Costumer;
 import com.project.backend.repositories.CostumerRepository;

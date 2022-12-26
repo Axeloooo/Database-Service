@@ -1,6 +1,6 @@
 package com.project.backend.controllers;
 
-import com.project.backend.Requests.CostumerRequest;
+import com.project.backend.requests.CostumerRequest;
 import com.project.backend.models.Costumer;
 import com.project.backend.services.CostumerService;
 import org.springframework.beans.factory.annotation.Autowired;

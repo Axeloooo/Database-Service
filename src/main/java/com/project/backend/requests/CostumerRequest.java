@@ -1,4 +1,4 @@
-package com.project.backend.Requests;
+package com.project.backend.requests;
 
 import java.util.Objects;
 

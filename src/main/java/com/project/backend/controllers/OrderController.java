@@ -1,6 +1,6 @@
 package com.project.backend.controllers;
 
-import com.project.backend.Requests.OrderRequest;
+import com.project.backend.requests.OrderRequest;
 import com.project.backend.models.Costumer;
 import com.project.backend.models.Order;
 import com.project.backend.repositories.CostumerRepository;
