@@ -1,14 +1,13 @@
 package com.project.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "ORDER")
-public class Order {
+@Table(name = "SHIPMENT")
+public class Shipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -22,30 +21,25 @@ public class Order {
     private String paymentStatus;
     @Column(name = "Distributor")
     private String distributor;
-    @JsonBackReference(value = "costumer")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Costumer costumer;
 
-    public Order() {
+    public Shipment() {
     }
 
-    public Order(long id, String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Costumer costumer) {
+    public Shipment(long id, String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor) {
         this.id = id;
         this.datePlaced = datePlaced;
         this.orderTotal = orderTotal;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.distributor = distributor;
-        this.costumer = costumer;
     }
 
-    public Order(String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Costumer costumer) {
+    public Shipment(String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor) {
         this.datePlaced = datePlaced;
         this.orderTotal = orderTotal;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.distributor = distributor;
-        this.costumer = costumer;
     }
 
     public long getId() {
@@ -96,37 +90,28 @@ public class Order {
         this.distributor = distributor;
     }
 
-    public Costumer getCostumer() {
-        return costumer;
-    }
-
-    public void setCostumer(Costumer costumer) {
-        this.costumer = costumer;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return id == order.id && orderTotal == order.orderTotal && Objects.equals(datePlaced, order.datePlaced) && Objects.equals(orderStatus, order.orderStatus) && Objects.equals(paymentStatus, order.paymentStatus) && Objects.equals(distributor, order.distributor) && Objects.equals(costumer, order.costumer);
+        Shipment order = (Shipment) o;
+        return id == order.id && orderTotal == order.orderTotal && Objects.equals(datePlaced, order.datePlaced) && Objects.equals(orderStatus, order.orderStatus) && Objects.equals(paymentStatus, order.paymentStatus) && Objects.equals(distributor, order.distributor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, datePlaced, orderTotal, orderStatus, paymentStatus, distributor, costumer);
+        return Objects.hash(id, datePlaced, orderTotal, orderStatus, paymentStatus, distributor);
     }
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "Shipment{" +
                 "id=" + id +
                 ", datePlaced='" + datePlaced + '\'' +
                 ", orderTotal=" + orderTotal +
                 ", orderStatus='" + orderStatus + '\'' +
                 ", paymentStatus='" + paymentStatus + '\'' +
                 ", distributor='" + distributor + '\'' +
-                ", costumer=" + costumer +
                 '}';
     }
 }
