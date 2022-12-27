@@ -1,5 +1,7 @@
 package com.project.backend.controllers;
 
+import com.project.backend.models.Costumer;
+import com.project.backend.repositories.CostumerRepository;
 import com.project.backend.requests.AddressRequest;
 import com.project.backend.models.Address;
 import com.project.backend.services.AddressService;
@@ -13,16 +15,20 @@ import org.springframework.web.bind.annotation.*;
 public class AddressController {
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private CostumerRepository costumerRepository;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> postAddress(@RequestBody AddressRequest adressRequest) {
+        Costumer searchedCostumer = costumerRepository.getReferenceById(adressRequest.getCostumerId());
         Address newAddress = new Address(
                 adressRequest.getCountry(),
                 adressRequest.getProvince(),
                 adressRequest.getCity(),
                 adressRequest.getStreet(),
                 adressRequest.getPostalCode(),
-                adressRequest.getBuildingName()
+                adressRequest.getBuildingName(),
+                searchedCostumer
         );
         return ResponseEntity.ok(addressService.postAddress(newAddress));
     }

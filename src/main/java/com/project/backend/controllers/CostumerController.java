@@ -24,7 +24,7 @@ public class CostumerController {
                 );
         return ResponseEntity.ok(costumerService.postCostumer(newCostumer));
     }
-    @GetMapping(value = "read/{id}")
+    @GetMapping(value = "get/{id}")
     public ResponseEntity<?> getCostumer(@PathVariable(name = "id") long id) {
         return ResponseEntity.ok(costumerService.getCostumer(id));
     }

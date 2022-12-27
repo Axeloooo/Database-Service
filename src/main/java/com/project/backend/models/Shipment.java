@@ -1,5 +1,6 @@
 package com.project.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.Objects;
@@ -21,25 +22,30 @@ public class Shipment {
     private String paymentStatus;
     @Column(name = "Distributor")
     private String distributor;
+    @JsonBackReference(value = "costumer")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Costumer costumer;
 
     public Shipment() {
     }
 
-    public Shipment(long id, String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor) {
+    public Shipment(long id, String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Costumer costumer) {
         this.id = id;
         this.datePlaced = datePlaced;
         this.orderTotal = orderTotal;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.distributor = distributor;
+        this.costumer = costumer;
     }
 
-    public Shipment(String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor) {
+    public Shipment(String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Costumer costumer) {
         this.datePlaced = datePlaced;
         this.orderTotal = orderTotal;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.distributor = distributor;
+        this.costumer = costumer;
     }
 
     public long getId() {
@@ -90,17 +96,25 @@ public class Shipment {
         this.distributor = distributor;
     }
 
+    public Costumer getCostumer() {
+        return costumer;
+    }
+
+    public void setCostumer(Costumer costumer) {
+        this.costumer = costumer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Shipment order = (Shipment) o;
-        return id == order.id && orderTotal == order.orderTotal && Objects.equals(datePlaced, order.datePlaced) && Objects.equals(orderStatus, order.orderStatus) && Objects.equals(paymentStatus, order.paymentStatus) && Objects.equals(distributor, order.distributor);
+        Shipment shipment = (Shipment) o;
+        return id == shipment.id && orderTotal == shipment.orderTotal && Objects.equals(datePlaced, shipment.datePlaced) && Objects.equals(orderStatus, shipment.orderStatus) && Objects.equals(paymentStatus, shipment.paymentStatus) && Objects.equals(distributor, shipment.distributor) && Objects.equals(costumer, shipment.costumer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, datePlaced, orderTotal, orderStatus, paymentStatus, distributor);
+        return Objects.hash(id, datePlaced, orderTotal, orderStatus, paymentStatus, distributor, costumer);
     }
 
     @Override
@@ -112,6 +126,7 @@ public class Shipment {
                 ", orderStatus='" + orderStatus + '\'' +
                 ", paymentStatus='" + paymentStatus + '\'' +
                 ", distributor='" + distributor + '\'' +
+                ", costumer=" + costumer +
                 '}';
     }
 }

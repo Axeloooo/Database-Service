@@ -1,5 +1,7 @@
 package com.project.backend.controllers;
 
+import com.project.backend.models.Costumer;
+import com.project.backend.repositories.CostumerRepository;
 import com.project.backend.requests.ShipmentRequest;
 import com.project.backend.models.Shipment;
 import com.project.backend.services.ShipmentService;
@@ -13,15 +15,19 @@ import org.springframework.web.bind.annotation.*;
 public class ShipmentController {
     @Autowired
     private ShipmentService shipmentService;
+    @Autowired
+    private CostumerRepository costumerRepository;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> postOrder(@RequestBody ShipmentRequest orderRequest) {
+        Costumer searchedCostumer = costumerRepository.getReferenceById(orderRequest.getCostumerId());
         Shipment newOrder = new Shipment(
                 orderRequest.getDatePlaced(),
                 orderRequest.getOrderTotal(),
                 orderRequest.getOrderStatus(),
                 orderRequest.getPaymentStatus(),
-                orderRequest.getDistributor()
+                orderRequest.getDistributor(),
+                searchedCostumer
         );
         return ResponseEntity.ok(shipmentService.postOrder(newOrder));
     }

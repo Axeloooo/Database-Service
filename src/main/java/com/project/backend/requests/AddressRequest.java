@@ -9,17 +9,19 @@ public class AddressRequest {
     private String street;
     private String postalCode;
     private String buildingName;
+    private long costumerId;
 
     public AddressRequest() {
     }
 
-    public AddressRequest(String country, String province, String city, String street, String postalCode, String buildingName) {
+    public AddressRequest(String country, String province, String city, String street, String postalCode, String buildingName, long costumerId) {
         this.country = country;
         this.province = province;
         this.city = city;
         this.street = street;
         this.postalCode = postalCode;
         this.buildingName = buildingName;
+        this.costumerId = costumerId;
     }
 
     public String getCountry() {
@@ -70,17 +72,25 @@ public class AddressRequest {
         this.buildingName = buildingName;
     }
 
+    public long getCostumerId() {
+        return costumerId;
+    }
+
+    public void setCostumerId(long costumerId) {
+        this.costumerId = costumerId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AddressRequest that = (AddressRequest) o;
-        return Objects.equals(country, that.country) && Objects.equals(province, that.province) && Objects.equals(city, that.city) && Objects.equals(street, that.street) && Objects.equals(postalCode, that.postalCode) && Objects.equals(buildingName, that.buildingName);
+        return costumerId == that.costumerId && Objects.equals(country, that.country) && Objects.equals(province, that.province) && Objects.equals(city, that.city) && Objects.equals(street, that.street) && Objects.equals(postalCode, that.postalCode) && Objects.equals(buildingName, that.buildingName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(country, province, city, street, postalCode, buildingName);
+        return Objects.hash(country, province, city, street, postalCode, buildingName, costumerId);
     }
 
     @Override
@@ -92,6 +102,7 @@ public class AddressRequest {
                 ", street='" + street + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", buildingName='" + buildingName + '\'' +
+                ", costumerId=" + costumerId +
                 '}';
     }
 }

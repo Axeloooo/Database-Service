@@ -1,5 +1,6 @@
 package com.project.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.Objects;
@@ -23,27 +24,31 @@ public class Address {
     private String postalCode;
     @Column(name = "Building_Name")
     private String buildingName;
-
+    @JsonBackReference(value = "costumer")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Costumer costumer;
     public Address() {
     }
 
-    public Address(long id, String country, String province, String city, String street, String postalCode, String building) {
+    public Address(long id, String country, String province, String city, String street, String postalCode, String buildingName, Costumer costumer) {
         this.id = id;
         this.country = country;
         this.province = province;
         this.city = city;
         this.street = street;
         this.postalCode = postalCode;
-        this.buildingName = building;
+        this.buildingName = buildingName;
+        this.costumer = costumer;
     }
 
-    public Address(String country, String province, String city, String street, String postalCode, String building) {
+    public Address(String country, String province, String city, String street, String postalCode, String buildingName, Costumer costumer) {
         this.country = country;
         this.province = province;
         this.city = city;
         this.street = street;
         this.postalCode = postalCode;
-        this.buildingName = building;
+        this.buildingName = buildingName;
+        this.costumer = costumer;
     }
 
     public long getId() {
@@ -94,30 +99,38 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public String getBuilding() {
+    public String getBuildingName() {
         return buildingName;
     }
 
-    public void setBuilding(String buildingName) {
+    public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
+    }
+
+    public Costumer getCostumer() {
+        return costumer;
+    }
+
+    public void setCostumer(Costumer costumer) {
+        this.costumer = costumer;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Address adress = (Address) o;
-        return id == adress.id && Objects.equals(country, adress.country) && Objects.equals(province, adress.province) && Objects.equals(city, adress.city) && Objects.equals(street, adress.street) && Objects.equals(postalCode, adress.postalCode) && Objects.equals(buildingName, adress.buildingName);
+        Address address = (Address) o;
+        return id == address.id && Objects.equals(country, address.country) && Objects.equals(province, address.province) && Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(postalCode, address.postalCode) && Objects.equals(buildingName, address.buildingName) && Objects.equals(costumer, address.costumer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, country, province, city, street, postalCode, buildingName);
+        return Objects.hash(id, country, province, city, street, postalCode, buildingName, costumer);
     }
 
     @Override
     public String toString() {
-        return "Adress{" +
+        return "Address{" +
                 "id=" + id +
                 ", country='" + country + '\'' +
                 ", province='" + province + '\'' +
@@ -125,6 +138,7 @@ public class Address {
                 ", street='" + street + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", buildingName='" + buildingName + '\'' +
+                ", costumer=" + costumer +
                 '}';
     }
 }

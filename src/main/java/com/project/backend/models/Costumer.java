@@ -1,7 +1,10 @@
 package com.project.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,17 +24,25 @@ public class Costumer {
     private String email;
     @Column(name = "Phone_Number")
     private int phoneNumber;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Address> address;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Shipment> shipment;
 
     public Costumer() {
     }
 
-    public Costumer(long id, String firstName, String lastName, String username, String email, int phoneNumber) {
+    public Costumer(long id, String firstName, String lastName, String username, String email, int phoneNumber, List<Address> address, List<Shipment> shipment) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.shipment = shipment;
     }
 
     public Costumer(String firstName, String lastName, String username, String email, int phoneNumber) {
@@ -90,17 +101,33 @@ public class Costumer {
         this.phoneNumber = phoneNumber;
     }
 
+    public List<Address> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<Address> address) {
+        this.address = address;
+    }
+
+    public List<Shipment> getShipment() {
+        return shipment;
+    }
+
+    public void setShipment(List<Shipment> shipment) {
+        this.shipment = shipment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Costumer costumer = (Costumer) o;
-        return id == costumer.id && phoneNumber == costumer.phoneNumber && Objects.equals(firstName, costumer.firstName) && Objects.equals(lastName, costumer.lastName) && Objects.equals(username, costumer.username) && Objects.equals(email, costumer.email);
+        return id == costumer.id && phoneNumber == costumer.phoneNumber && Objects.equals(firstName, costumer.firstName) && Objects.equals(lastName, costumer.lastName) && Objects.equals(username, costumer.username) && Objects.equals(email, costumer.email) && Objects.equals(address, costumer.address) && Objects.equals(shipment, costumer.shipment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, username, email, phoneNumber);
+        return Objects.hash(id, firstName, lastName, username, email, phoneNumber, address, shipment);
     }
 
     @Override
@@ -112,6 +139,8 @@ public class Costumer {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber=" + phoneNumber +
+                ", address=" + address +
+                ", shipment=" + shipment +
                 '}';
     }
 }
