@@ -1,8 +1,6 @@
 package com.project.backend.controllers;
 
 import com.project.backend.models.Costumer;
-import com.project.backend.repositories.CostumerRepository;
-import com.project.backend.repositories.ShipmentRepository;
 import com.project.backend.requests.ShipmentRequest;
 import com.project.backend.models.Shipment;
 import com.project.backend.services.CostumerService;
@@ -22,7 +20,6 @@ public class ShipmentController {
     private ShipmentService shipmentService;
     @Autowired
     private CostumerService costumerService;
-
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> postOrder(@RequestBody ShipmentRequest shipmentRequest) {
         try{
