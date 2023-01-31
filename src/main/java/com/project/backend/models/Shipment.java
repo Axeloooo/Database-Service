@@ -7,45 +7,45 @@ import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "SHIPMENT")
+@Table(name = "shipment")
 public class Shipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "Date_Placed")
+    @Column(name = "date_placed")
     private String datePlaced;
-    @Column(name = "Order_Total")
+    @Column(name = "order_total")
     private int orderTotal;
-    @Column(name = "Order_Status")
+    @Column(name = "order_status")
     private String orderStatus;
-    @Column(name = "Payment_Status")
+    @Column(name = "payment_status")
     private String paymentStatus;
-    @Column(name = "Distributor")
+    @Column(name = "distributor")
     private String distributor;
-    @JsonBackReference(value = "costumer")
+    @JsonBackReference(value = "customer")
     @ManyToOne(fetch = FetchType.EAGER)
-    private Costumer costumer;
+    private Customer customer;
 
     public Shipment() {
     }
 
-    public Shipment(long id, String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Costumer costumer) {
+    public Shipment(long id, String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Customer customer) {
         this.id = id;
         this.datePlaced = datePlaced;
         this.orderTotal = orderTotal;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.distributor = distributor;
-        this.costumer = costumer;
+        this.customer = customer;
     }
 
-    public Shipment(String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Costumer costumer) {
+    public Shipment(String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Customer customer) {
         this.datePlaced = datePlaced;
         this.orderTotal = orderTotal;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.distributor = distributor;
-        this.costumer = costumer;
+        this.customer = customer;
     }
 
     public long getId() {
@@ -96,12 +96,12 @@ public class Shipment {
         this.distributor = distributor;
     }
 
-    public Costumer getCostumer() {
-        return costumer;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCostumer(Costumer costumer) {
-        this.costumer = costumer;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
@@ -109,12 +109,12 @@ public class Shipment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Shipment shipment = (Shipment) o;
-        return id == shipment.id && orderTotal == shipment.orderTotal && Objects.equals(datePlaced, shipment.datePlaced) && Objects.equals(orderStatus, shipment.orderStatus) && Objects.equals(paymentStatus, shipment.paymentStatus) && Objects.equals(distributor, shipment.distributor) && Objects.equals(costumer, shipment.costumer);
+        return id == shipment.id && orderTotal == shipment.orderTotal && Objects.equals(datePlaced, shipment.datePlaced) && Objects.equals(orderStatus, shipment.orderStatus) && Objects.equals(paymentStatus, shipment.paymentStatus) && Objects.equals(distributor, shipment.distributor) && Objects.equals(customer, shipment.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, datePlaced, orderTotal, orderStatus, paymentStatus, distributor, costumer);
+        return Objects.hash(id, datePlaced, orderTotal, orderStatus, paymentStatus, distributor, customer);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class Shipment {
                 ", orderStatus='" + orderStatus + '\'' +
                 ", paymentStatus='" + paymentStatus + '\'' +
                 ", distributor='" + distributor + '\'' +
-                ", costumer=" + costumer +
+                ", customer=" + customer +
                 '}';
     }
 }

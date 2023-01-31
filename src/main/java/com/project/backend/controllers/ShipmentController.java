@@ -1,9 +1,9 @@
 package com.project.backend.controllers;
 
-import com.project.backend.models.Costumer;
+import com.project.backend.models.Customer;
 import com.project.backend.requests.ShipmentRequest;
 import com.project.backend.models.Shipment;
-import com.project.backend.services.CostumerService;
+import com.project.backend.services.CustomerService;
 import com.project.backend.services.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,20 +19,21 @@ public class ShipmentController {
     @Autowired
     private ShipmentService shipmentService;
     @Autowired
-    private CostumerService costumerService;
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
+    private CustomerService customerService;
+
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> postOrder(@RequestBody ShipmentRequest shipmentRequest) {
         try{
-            Optional<Costumer> searchedCostumer = costumerService.getCostumer(shipmentRequest.getCostumerId());
-            if(searchedCostumer.isPresent()) {
-                Costumer costumer = searchedCostumer.get();
+            Optional<Customer> searchedCustomer = customerService.getCustomer(shipmentRequest.getCustomerId());
+            if(searchedCustomer.isPresent()) {
+                Customer customer = searchedCustomer.get();
                 Shipment newShipment = new Shipment(
                         shipmentRequest.getDatePlaced(),
                         shipmentRequest.getOrderTotal(),
                         shipmentRequest.getOrderStatus(),
                         shipmentRequest.getPaymentStatus(),
                         shipmentRequest.getDistributor(),
-                        costumer
+                        customer
                 );
                 return ResponseEntity.created(URI.create("")).body(shipmentService.postShipment(newShipment));
             } else {
@@ -42,6 +43,7 @@ public class ShipmentController {
             return ResponseEntity.internalServerError().body(e.getStackTrace());
         }
     }
+
     @GetMapping(value = "get/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> getOrder(@PathVariable(name = "id") long id) {
         Optional<Shipment> searchedShipment = shipmentService.getShipment(id);
@@ -51,13 +53,55 @@ public class ShipmentController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping(value = "get/all", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> getAllShipment() {
-        return ResponseEntity.ok().body(shipmentService.getAllShipment());
+        try {
+            return ResponseEntity.ok().body(shipmentService.getAllShipment());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getStackTrace());
+        }
     }
+
     @DeleteMapping(value = "delete/{id}")
     public ResponseEntity<?> deleteShipment(@PathVariable(name = "id") long id) {
-        shipmentService.deleteShipment(id);
-        return ResponseEntity.ok().body("Shipment with ID:" + id + " deleted.");
+        try {
+            Optional<Shipment> searchedShipment = shipmentService.getShipment(id);
+            if (searchedShipment.isPresent()) {
+                shipmentService.deleteShipment(id);
+                return ResponseEntity.ok().body("Shipment with ID:" + id + " deleted.");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getStackTrace());
+        }
+    }
+
+    @PutMapping(value = "put/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> putShipment(@PathVariable(name = "id") long id, @RequestBody ShipmentRequest shipmentRequest) {
+        try {
+            Optional<Customer> searchedCustomer = customerService.getCustomer(shipmentRequest.getCustomerId());
+            Optional<Shipment> searchedShipment = shipmentService.getShipment(id);
+            if (searchedShipment.isPresent() && searchedCustomer.isPresent()) {
+                if(searchedShipment.get().getCustomer().getId() == shipmentRequest.getCustomerId()){
+                    Shipment updatedShipment = searchedShipment.get();
+                    Customer updatedCustomer = searchedCustomer.get();
+                    updatedShipment.setDatePlaced(shipmentRequest.getDatePlaced());
+                    updatedShipment.setOrderTotal(shipmentRequest.getOrderTotal());
+                    updatedShipment.setOrderStatus(shipmentRequest.getOrderStatus());
+                    updatedShipment.setPaymentStatus(shipmentRequest.getPaymentStatus());
+                    updatedShipment.setDistributor(shipmentRequest.getDistributor());
+                    updatedShipment.setCustomer(updatedCustomer);
+                    return ResponseEntity.ok().body(shipmentService.putShipment(updatedShipment));
+                } else {
+                    return ResponseEntity.badRequest().body("Customer ID does not match.");
+                }
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getStackTrace());
+        }
     }
 }

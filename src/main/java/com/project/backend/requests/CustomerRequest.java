@@ -2,17 +2,17 @@ package com.project.backend.requests;
 
 import java.util.Objects;
 
-public class CostumerRequest {
+public class CustomerRequest {
     private String firstName;
     private String lastName;
     private String username;
     private String email;
     private int phoneNumber;
 
-    public CostumerRequest() {
+    public CustomerRequest() {
     }
 
-    public CostumerRequest(String firstName, String lastName, String username, String email, int phoneNumber) {
+    public CustomerRequest(String firstName, String lastName, String username, String email, int phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -64,7 +64,7 @@ public class CostumerRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CostumerRequest that = (CostumerRequest) o;
+        CustomerRequest that = (CustomerRequest) o;
         return phoneNumber == that.phoneNumber && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(username, that.username) && Objects.equals(email, that.email);
     }
 
@@ -75,7 +75,7 @@ public class CostumerRequest {
 
     @Override
     public String toString() {
-        return "CostumerRequest{" +
+        return "CustomerRequest{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +

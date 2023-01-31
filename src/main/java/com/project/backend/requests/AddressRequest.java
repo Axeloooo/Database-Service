@@ -9,19 +9,19 @@ public class AddressRequest {
     private String street;
     private String postalCode;
     private String buildingName;
-    private long costumerId;
+    private long customerId;
 
     public AddressRequest() {
     }
 
-    public AddressRequest(String country, String province, String city, String street, String postalCode, String buildingName, long costumerId) {
+    public AddressRequest(String country, String province, String city, String street, String postalCode, String buildingName, long customerId) {
         this.country = country;
         this.province = province;
         this.city = city;
         this.street = street;
         this.postalCode = postalCode;
         this.buildingName = buildingName;
-        this.costumerId = costumerId;
+        this.customerId = customerId;
     }
 
     public String getCountry() {
@@ -72,12 +72,12 @@ public class AddressRequest {
         this.buildingName = buildingName;
     }
 
-    public long getCostumerId() {
-        return costumerId;
+    public long getCustomerId() {
+        return customerId;
     }
 
-    public void setCostumerId(long costumerId) {
-        this.costumerId = costumerId;
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
     }
 
     @Override
@@ -85,12 +85,12 @@ public class AddressRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AddressRequest that = (AddressRequest) o;
-        return costumerId == that.costumerId && Objects.equals(country, that.country) && Objects.equals(province, that.province) && Objects.equals(city, that.city) && Objects.equals(street, that.street) && Objects.equals(postalCode, that.postalCode) && Objects.equals(buildingName, that.buildingName);
+        return customerId == that.customerId && Objects.equals(country, that.country) && Objects.equals(province, that.province) && Objects.equals(city, that.city) && Objects.equals(street, that.street) && Objects.equals(postalCode, that.postalCode) && Objects.equals(buildingName, that.buildingName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(country, province, city, street, postalCode, buildingName, costumerId);
+        return Objects.hash(country, province, city, street, postalCode, buildingName, customerId);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class AddressRequest {
                 ", street='" + street + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", buildingName='" + buildingName + '\'' +
-                ", costumerId=" + costumerId +
+                ", customerId=" + customerId +
                 '}';
     }
 }

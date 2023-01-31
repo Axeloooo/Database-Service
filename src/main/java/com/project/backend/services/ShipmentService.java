@@ -24,4 +24,7 @@ public class ShipmentService {
     public void deleteShipment(long id) {
         shipmentRepository.deleteById(id);
     }
+    public Shipment putShipment(Shipment updatedShipment) {
+        return shipmentRepository.save(updatedShipment);
+    }
 }

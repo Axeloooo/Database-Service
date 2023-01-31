@@ -8,18 +8,18 @@ public class ShipmentRequest {
     private String orderStatus;
     private String paymentStatus;
     private String distributor;
-    private long costumerId;
+    private long customerId;
 
     public ShipmentRequest() {
     }
 
-    public ShipmentRequest(String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, long costumerId) {
+    public ShipmentRequest(String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, long customerId) {
         this.datePlaced = datePlaced;
         this.orderTotal = orderTotal;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.distributor = distributor;
-        this.costumerId = costumerId;
+        this.customerId = customerId;
     }
 
     public String getDatePlaced() {
@@ -62,12 +62,12 @@ public class ShipmentRequest {
         this.distributor = distributor;
     }
 
-    public long getCostumerId() {
-        return costumerId;
+    public long getCustomerId() {
+        return customerId;
     }
 
-    public void setCostumerId(long costumerId) {
-        this.costumerId = costumerId;
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
     }
 
     @Override
@@ -75,12 +75,12 @@ public class ShipmentRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShipmentRequest that = (ShipmentRequest) o;
-        return orderTotal == that.orderTotal && costumerId == that.costumerId && Objects.equals(datePlaced, that.datePlaced) && Objects.equals(orderStatus, that.orderStatus) && Objects.equals(paymentStatus, that.paymentStatus) && Objects.equals(distributor, that.distributor);
+        return orderTotal == that.orderTotal && customerId == that.customerId && Objects.equals(datePlaced, that.datePlaced) && Objects.equals(orderStatus, that.orderStatus) && Objects.equals(paymentStatus, that.paymentStatus) && Objects.equals(distributor, that.distributor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(datePlaced, orderTotal, orderStatus, paymentStatus, distributor, costumerId);
+        return Objects.hash(datePlaced, orderTotal, orderStatus, paymentStatus, distributor, customerId);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ShipmentRequest {
                 ", orderStatus='" + orderStatus + '\'' +
                 ", paymentStatus='" + paymentStatus + '\'' +
                 ", distributor='" + distributor + '\'' +
-                ", costumerId=" + costumerId +
+                ", customerId=" + customerId +
                 '}';
     }
 }

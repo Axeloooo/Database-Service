@@ -7,30 +7,31 @@ import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "ADDRESS")
+@Table(name = "address")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "Country")
+    @Column(name = "country")
     private String country;
-    @Column(name = "Province")
+    @Column(name = "province")
     private String province;
-    @Column(name = "City")
+    @Column(name = "city")
     private String city;
-    @Column(name = "Street")
+    @Column(name = "street")
     private String street;
-    @Column(name = "Postal_Code")
+    @Column(name = "postal_code")
     private String postalCode;
-    @Column(name = "Building_Name")
+    @Column(name = "building_name")
     private String buildingName;
-    @JsonBackReference(value = "costumer")
+    @JsonBackReference(value = "customer")
     @ManyToOne(fetch = FetchType.EAGER)
-    private Costumer costumer;
+    private Customer customer;
+
     public Address() {
     }
 
-    public Address(long id, String country, String province, String city, String street, String postalCode, String buildingName, Costumer costumer) {
+    public Address(long id, String country, String province, String city, String street, String postalCode, String buildingName, Customer customer) {
         this.id = id;
         this.country = country;
         this.province = province;
@@ -38,17 +39,17 @@ public class Address {
         this.street = street;
         this.postalCode = postalCode;
         this.buildingName = buildingName;
-        this.costumer = costumer;
+        this.customer = customer;
     }
 
-    public Address(String country, String province, String city, String street, String postalCode, String buildingName, Costumer costumer) {
+    public Address(String country, String province, String city, String street, String postalCode, String buildingName, Customer customer) {
         this.country = country;
         this.province = province;
         this.city = city;
         this.street = street;
         this.postalCode = postalCode;
         this.buildingName = buildingName;
-        this.costumer = costumer;
+        this.customer = customer;
     }
 
     public long getId() {
@@ -107,12 +108,12 @@ public class Address {
         this.buildingName = buildingName;
     }
 
-    public Costumer getCostumer() {
-        return costumer;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCostumer(Costumer costumer) {
-        this.costumer = costumer;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
@@ -120,12 +121,12 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return id == address.id && Objects.equals(country, address.country) && Objects.equals(province, address.province) && Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(postalCode, address.postalCode) && Objects.equals(buildingName, address.buildingName) && Objects.equals(costumer, address.costumer);
+        return id == address.id && Objects.equals(country, address.country) && Objects.equals(province, address.province) && Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(postalCode, address.postalCode) && Objects.equals(buildingName, address.buildingName) && Objects.equals(customer, address.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, country, province, city, street, postalCode, buildingName, costumer);
+        return Objects.hash(id, country, province, city, street, postalCode, buildingName, customer);
     }
 
     @Override
@@ -138,7 +139,7 @@ public class Address {
                 ", street='" + street + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", buildingName='" + buildingName + '\'' +
-                ", costumer=" + costumer +
+                ", customer=" + customer +
                 '}';
     }
 }

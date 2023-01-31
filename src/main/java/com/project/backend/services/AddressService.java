@@ -24,4 +24,7 @@ public class AddressService {
     public void deleteAddress(long id) {
         addressRepository.deleteById(id);
     }
+    public Address putAddress(Address updatedAddress) {
+        return addressRepository.save(updatedAddress);
+    }
 }

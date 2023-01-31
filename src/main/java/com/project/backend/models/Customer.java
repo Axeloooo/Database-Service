@@ -9,32 +9,35 @@ import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "COSTUMER")
-public class Costumer {
+@Table(name = "customer")
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "First_Name")
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "Last_Name")
+    @Column(name = "last_name")
     private String lastName;
-    @Column(name = "Username")
+    @Column(name = "username")
     private String username;
-    @Column(name = "Email")
+    @Column(name = "email")
     private String email;
-    @Column(name = "Phone_Number")
+    @Column(name = "phone_number")
     private int phoneNumber;
     @JsonManagedReference
-    @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Address> address;
     @JsonManagedReference
-    @OneToMany(mappedBy = "costumer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Shipment> shipment;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Product> product;
 
-    public Costumer() {
+    public Customer() {
     }
 
-    public Costumer(long id, String firstName, String lastName, String username, String email, int phoneNumber, List<Address> address, List<Shipment> shipment) {
+    public Customer(long id, String firstName, String lastName, String username, String email, int phoneNumber, List<Address> address, List<Shipment> shipment, List<Product> product) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,9 +46,10 @@ public class Costumer {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.shipment = shipment;
+        this.product = product;
     }
 
-    public Costumer(String firstName, String lastName, String username, String email, int phoneNumber) {
+    public Customer(String firstName, String lastName, String username, String email, int phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -117,22 +121,30 @@ public class Costumer {
         this.shipment = shipment;
     }
 
+    public List<Product> getProduct() {
+        return product;
+    }
+
+    public void setProduct(List<Product> product) {
+        this.product = product;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Costumer costumer = (Costumer) o;
-        return id == costumer.id && phoneNumber == costumer.phoneNumber && Objects.equals(firstName, costumer.firstName) && Objects.equals(lastName, costumer.lastName) && Objects.equals(username, costumer.username) && Objects.equals(email, costumer.email) && Objects.equals(address, costumer.address) && Objects.equals(shipment, costumer.shipment);
+        Customer customer = (Customer) o;
+        return id == customer.id && phoneNumber == customer.phoneNumber && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(username, customer.username) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address) && Objects.equals(shipment, customer.shipment) && Objects.equals(product, customer.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, username, email, phoneNumber, address, shipment);
+        return Objects.hash(id, firstName, lastName, username, email, phoneNumber, address, shipment, product);
     }
 
     @Override
     public String toString() {
-        return "Costumer{" +
+        return "Customer{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -141,6 +153,7 @@ public class Costumer {
                 ", phoneNumber=" + phoneNumber +
                 ", address=" + address +
                 ", shipment=" + shipment +
+                ", product=" + product +
                 '}';
     }
 }
