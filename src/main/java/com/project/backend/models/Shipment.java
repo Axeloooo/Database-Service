@@ -14,8 +14,6 @@ public class Shipment {
     private long id;
     @Column(name = "date_placed")
     private String datePlaced;
-    @Column(name = "order_total")
-    private int orderTotal;
     @Column(name = "order_status")
     private String orderStatus;
     @Column(name = "payment_status")
@@ -29,19 +27,17 @@ public class Shipment {
     public Shipment() {
     }
 
-    public Shipment(long id, String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Customer customer) {
+    public Shipment(long id, String datePlaced, String orderStatus, String paymentStatus, String distributor, Customer customer) {
         this.id = id;
         this.datePlaced = datePlaced;
-        this.orderTotal = orderTotal;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.distributor = distributor;
         this.customer = customer;
     }
 
-    public Shipment(String datePlaced, int orderTotal, String orderStatus, String paymentStatus, String distributor, Customer customer) {
+    public Shipment(String datePlaced, String orderStatus, String paymentStatus, String distributor, Customer customer) {
         this.datePlaced = datePlaced;
-        this.orderTotal = orderTotal;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.distributor = distributor;
@@ -62,14 +58,6 @@ public class Shipment {
 
     public void setDatePlaced(String datePlaced) {
         this.datePlaced = datePlaced;
-    }
-
-    public int getOrderTotal() {
-        return orderTotal;
-    }
-
-    public void setOrderTotal(int orderTotal) {
-        this.orderTotal = orderTotal;
     }
 
     public String getOrderStatus() {
@@ -109,12 +97,12 @@ public class Shipment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Shipment shipment = (Shipment) o;
-        return id == shipment.id && orderTotal == shipment.orderTotal && Objects.equals(datePlaced, shipment.datePlaced) && Objects.equals(orderStatus, shipment.orderStatus) && Objects.equals(paymentStatus, shipment.paymentStatus) && Objects.equals(distributor, shipment.distributor) && Objects.equals(customer, shipment.customer);
+        return id == shipment.id && Objects.equals(datePlaced, shipment.datePlaced) && Objects.equals(orderStatus, shipment.orderStatus) && Objects.equals(paymentStatus, shipment.paymentStatus) && Objects.equals(distributor, shipment.distributor) && Objects.equals(customer, shipment.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, datePlaced, orderTotal, orderStatus, paymentStatus, distributor, customer);
+        return Objects.hash(id, datePlaced, orderStatus, paymentStatus, distributor, customer);
     }
 
     @Override
@@ -122,7 +110,6 @@ public class Shipment {
         return "Shipment{" +
                 "id=" + id +
                 ", datePlaced='" + datePlaced + '\'' +
-                ", orderTotal=" + orderTotal +
                 ", orderStatus='" + orderStatus + '\'' +
                 ", paymentStatus='" + paymentStatus + '\'' +
                 ", distributor='" + distributor + '\'' +

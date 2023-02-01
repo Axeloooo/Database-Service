@@ -24,37 +24,45 @@ public class Customer {
     private String email;
     @Column(name = "phone_number")
     private int phoneNumber;
+    @Column(name = "total_products")
+    private int totalProducts;
+    @Column(name = "total_price")
+    private float totalPrice;
     @JsonManagedReference
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Address> address;
     @JsonManagedReference
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Shipment> shipment;
     @JsonManagedReference
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Product> product;
 
     public Customer() {
     }
 
-    public Customer(long id, String firstName, String lastName, String username, String email, int phoneNumber, List<Address> address, List<Shipment> shipment, List<Product> product) {
+    public Customer(long id, String firstName, String lastName, String username, String email, int phoneNumber, int totalProducts, float totalPrice, List<Address> address, List<Shipment> shipment, List<Product> product) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.totalProducts = totalProducts;
+        this.totalPrice = totalPrice;
         this.address = address;
         this.shipment = shipment;
         this.product = product;
     }
 
-    public Customer(String firstName, String lastName, String username, String email, int phoneNumber) {
+    public Customer(String firstName, String lastName, String username, String email, int phoneNumber, int totalProducts, float totalPrice) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.totalProducts = totalProducts;
+        this.totalPrice = totalPrice;
     }
 
     public long getId() {
@@ -105,6 +113,22 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
+    public int getTotalProducts() {
+        return totalProducts;
+    }
+
+    public void setTotalProducts(int totalProducts) {
+        this.totalProducts = totalProducts;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public List<Address> getAddress() {
         return address;
     }
@@ -134,12 +158,12 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return id == customer.id && phoneNumber == customer.phoneNumber && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(username, customer.username) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address) && Objects.equals(shipment, customer.shipment) && Objects.equals(product, customer.product);
+        return id == customer.id && phoneNumber == customer.phoneNumber && totalProducts == customer.totalProducts && Float.compare(customer.totalPrice, totalPrice) == 0 && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(username, customer.username) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address) && Objects.equals(shipment, customer.shipment) && Objects.equals(product, customer.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, username, email, phoneNumber, address, shipment, product);
+        return Objects.hash(id, firstName, lastName, username, email, phoneNumber, totalProducts, totalPrice, address, shipment, product);
     }
 
     @Override
@@ -151,9 +175,12 @@ public class Customer {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber=" + phoneNumber +
+                ", totalProducts=" + totalProducts +
+                ", totalPrice=" + totalPrice +
                 ", address=" + address +
                 ", shipment=" + shipment +
                 ", product=" + product +
                 '}';
     }
 }
+

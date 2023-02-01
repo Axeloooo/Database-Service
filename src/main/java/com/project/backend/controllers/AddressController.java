@@ -70,7 +70,9 @@ public class AddressController {
         try {
             Optional<Address> searchedAddress = addressService.getAddress(id);
             if(searchedAddress.isPresent()) {
-                addressService.deleteAddress(id);
+                Customer customer = searchedAddress.get().getCustomer();
+                customer.getAddress().removeIf(address -> address.getId() == id);
+                customerService.putCustomer(customer);
                 return ResponseEntity.ok().body("Address with ID:" + id + " deleted.");
             } else {
                 return ResponseEntity.notFound().build();

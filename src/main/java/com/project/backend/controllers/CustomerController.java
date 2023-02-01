@@ -24,7 +24,9 @@ public class CustomerController {
                     customerRequest.getLastName(),
                     customerRequest.getUsername(),
                     customerRequest.getEmail(),
-                    customerRequest.getPhoneNumber()
+                    customerRequest.getPhoneNumber(),
+                    0,
+                    0
             );
             return ResponseEntity.created(URI.create("")).body(customerService.postCustomer(newCustomer));
         } catch (Exception e) {
@@ -81,4 +83,5 @@ public class CustomerController {
             return ResponseEntity.internalServerError().body(e.getStackTrace());
         }
     }
+
 }

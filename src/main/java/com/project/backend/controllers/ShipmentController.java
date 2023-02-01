@@ -3,19 +3,26 @@ package com.project.backend.controllers;
 import com.project.backend.models.Customer;
 import com.project.backend.requests.ShipmentRequest;
 import com.project.backend.models.Shipment;
+import com.project.backend.schemas.WorldClockAPISchema;
 import com.project.backend.services.CustomerService;
 import com.project.backend.services.ShipmentService;
+import com.project.backend.services.WorldClockAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/shipment")
 public class ShipmentController {
+    @Autowired
+    private WorldClockAPIService worldClockAPIService;
     @Autowired
     private ShipmentService shipmentService;
     @Autowired
@@ -28,8 +35,7 @@ public class ShipmentController {
             if(searchedCustomer.isPresent()) {
                 Customer customer = searchedCustomer.get();
                 Shipment newShipment = new Shipment(
-                        shipmentRequest.getDatePlaced(),
-                        shipmentRequest.getOrderTotal(),
+                        calculateCurrentDate(),
                         shipmentRequest.getOrderStatus(),
                         shipmentRequest.getPaymentStatus(),
                         shipmentRequest.getDistributor(),
@@ -68,7 +74,9 @@ public class ShipmentController {
         try {
             Optional<Shipment> searchedShipment = shipmentService.getShipment(id);
             if (searchedShipment.isPresent()) {
-                shipmentService.deleteShipment(id);
+                Customer customer = searchedShipment.get().getCustomer();
+                customer.getShipment().removeIf(shipment -> shipment.getId() == id);
+                customerService.putCustomer(customer);
                 return ResponseEntity.ok().body("Shipment with ID:" + id + " deleted.");
             } else {
                 return ResponseEntity.notFound().build();
@@ -87,8 +95,7 @@ public class ShipmentController {
                 if(searchedShipment.get().getCustomer().getId() == shipmentRequest.getCustomerId()){
                     Shipment updatedShipment = searchedShipment.get();
                     Customer updatedCustomer = searchedCustomer.get();
-                    updatedShipment.setDatePlaced(shipmentRequest.getDatePlaced());
-                    updatedShipment.setOrderTotal(shipmentRequest.getOrderTotal());
+                    updatedShipment.setDatePlaced(calculateCurrentDate());
                     updatedShipment.setOrderStatus(shipmentRequest.getOrderStatus());
                     updatedShipment.setPaymentStatus(shipmentRequest.getPaymentStatus());
                     updatedShipment.setDistributor(shipmentRequest.getDistributor());
@@ -102,6 +109,16 @@ public class ShipmentController {
             }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getStackTrace());
+        }
+    }
+
+    private String calculateCurrentDate() {
+        try {
+            WorldClockAPISchema worldClock = worldClockAPIService.getWorldClockAPI();
+            return worldClock.getCurrentDateTime();
+        } catch (Exception e) {
+            LocalDateTime currentDate = LocalDateTime.now();
+            return currentDate.toString();
         }
     }
 }

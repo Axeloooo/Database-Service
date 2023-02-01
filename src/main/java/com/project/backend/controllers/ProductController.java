@@ -34,6 +34,7 @@ public class ProductController {
                         productRequest.getDescription(),
                         customer
                 );
+                calculateProductDetails(newProduct, "post");
                 return ResponseEntity.created(URI.create("")).body(productService.postProduct(newProduct));
             } else {
                 return ResponseEntity.notFound().build();
@@ -71,8 +72,11 @@ public class ProductController {
         try {
             Optional<Product> searchedProduct = productService.getProduct(id);
             if (searchedProduct.isPresent()) {
-                productService.deleteProduct(id);
-                return ResponseEntity.ok().build();
+                Customer customer = searchedProduct.get().getCustomer();
+                customer.getProduct().removeIf(product -> product.getId() == id);
+                calculateProductDetails(searchedProduct.get(), "delete");
+                customerService.putCustomer(customer);
+                return ResponseEntity.ok().body("Product with ID:" + id + " deleted.");
             } else {
                 return ResponseEntity.notFound().build();
             }
@@ -95,6 +99,7 @@ public class ProductController {
                     updateProduct.setQuantity(productRequest.getQuantity());
                     updateProduct.setDescription(productRequest.getDescription());
                     updateProduct.setCustomer(updatedCustomer);
+                    calculateProductsDetails(updateProduct, searchedProduct.get());
                     return ResponseEntity.ok(productService.putProduct(updateProduct));
                 } else {
                     return ResponseEntity.badRequest().body("Customer ID does not match");
@@ -105,5 +110,37 @@ public class ProductController {
         } catch(Exception e) {
             return ResponseEntity.internalServerError().body(e.getStackTrace());
         }
+    }
+
+    private void calculateProductDetails(Product product, String operation) {
+        float totalPrice = product.getCustomer().getTotalPrice();
+        int totalProducts = product.getCustomer().getTotalProducts();
+        Customer customer = product.getCustomer();
+        switch (operation) {
+            case "post" -> {
+                totalPrice += product.getPrice();
+                totalProducts += product.getQuantity();
+                customer.setTotalPrice(totalPrice);
+                customer.setTotalProducts(totalProducts);
+            }
+            case "delete" -> {
+                totalPrice -= product.getPrice();
+                totalProducts -= product.getQuantity();
+                customer.setTotalPrice(totalPrice);
+                customer.setTotalProducts(totalProducts);
+            }
+        }
+    }
+
+    private void calculateProductsDetails(Product newProduct, Product oldProduct) {
+        float totalPrice = oldProduct.getCustomer().getTotalPrice();
+        int totalProducts = oldProduct.getCustomer().getTotalProducts();
+        Customer customer = oldProduct.getCustomer();
+        totalPrice -= oldProduct.getPrice();
+        totalProducts -= oldProduct.getQuantity();
+        totalPrice += newProduct.getPrice();
+        totalProducts += newProduct.getQuantity();
+        customer.setTotalPrice(totalPrice);
+        customer.setTotalProducts(totalProducts);
     }
 }
